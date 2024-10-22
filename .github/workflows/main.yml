@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Copy and deploy to gh-pages
+      run: |
+        git config --global user.name "Влад и Андрей"
+        git config --global user.email "123@gamil.com"
+        git checkout gh-pages
+        cp -r build/* .
+        git add .
+        git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
+        git push origin gh-pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
